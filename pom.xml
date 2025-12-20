@@ -54,6 +54,7 @@
           </execution>
         </executions>
       </plugin>
+
       <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
