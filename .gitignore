@@ -1,0 +1,42 @@
+## IntelliJ IDEA
+# General
+.idea/libraries/
+.idea/shelf/
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/copilot.data.migration.agent.xml
+.idea/copilot.data.migration.ask.xml
+.idea/copilot.data.migration.ask2agent.xml
+.idea/copilot.data.migration.edit.xml
+*.iws
+*.iml
+*.ipr
+
+# Editor-based HTTP Client requests
+.idea/httpRequests/
+
+# Datasource local storage ignored files
+.idea/dataSources/
+.idea/dataSources.local.xml
+
+## Maven
+.mvn/wrapper/maven-wrapper.jar
+dependency-reduced-pom.xml
+target/
+
+## Linux
+# Temporary files
+*~
+
+## macOS
+# Files created by macOS Finder
+.DS_Store
+
+## Windows
+# Windows thumbnail cache files
+Thumbs.db
+
+# Folder config file
+[Dd]esktop.ini
