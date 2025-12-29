@@ -1,11 +1,18 @@
 package ch.heigvd;
 
-// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import io.javalin.Javalin;
+
 public class Main {
-  public static void main(String[] args) {
-    // TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    System.out.printf("Hello and welcome!");
-  }
+    public static final int PORT = 8080;
+
+    public static void main(String[] args) {
+        Javalin app = Javalin.create();
+
+        app.get("/", ctx -> ctx.result("Hello, world from a GET request method!"));
+        app.post("/", ctx -> ctx.result("Hello, world from a POST request method!"));
+        app.patch("/", ctx -> ctx.result("Hello, world from a PATCH request method!"));
+        app.delete("/", ctx -> ctx.result("Hello, world from a DELETE request method!"));
+
+        app.start(PORT);
+    }
 }
