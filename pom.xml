@@ -19,6 +19,13 @@
       <artifactId>picocli</artifactId>
       <version>4.7.7</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.javalin/javalin-bundle -->
+    <dependency>
+      <groupId>io.javalin</groupId>
+      <artifactId>javalin-bundle</artifactId>
+      <version>6.7.0</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -89,6 +96,17 @@
                   <resource>MANIFEST.MF</resource>
                 </transformer>
               </transformers>
+                <filters>
+                    <!-- This filter is needed to avoid a bug in the shade plugin -->
+                    <filter>
+                        <artifact>*:*</artifact>
+                        <excludes>
+                            <exclude>META-INF/*.SF</exclude>
+                            <exclude>META-INF/*.DSA</exclude>
+                            <exclude>META-INF/*.RSA</exclude>
+                        </excludes>
+                    </filter>
+                </filters>
             </configuration>
           </execution>
         </executions>
