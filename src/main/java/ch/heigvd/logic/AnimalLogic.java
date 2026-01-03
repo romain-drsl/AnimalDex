@@ -19,7 +19,7 @@ public class AnimalLogic {
         }
 
         animal.setNumber(counter++);
-        animals.put(animal.getNumber(), animal); // Stockage de l'animal dans la map
+        animals.put(animal.getNumber(), animal); // Stockage du nouvel animal dans la map
         return animal;
     }
 
