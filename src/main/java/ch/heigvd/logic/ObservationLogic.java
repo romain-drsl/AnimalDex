@@ -2,17 +2,17 @@ package ch.heigvd.logic;
 
 import ch.heigvd.exceptions.NotFoundException;
 import ch.heigvd.models.Observation;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ObservationLogic {
 
-    private final Map<Integer, Observation> observations = new HashMap<>();
-    private int counter = 1;
+    private final Map<Integer, Observation> observations = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger(1);
 
     // Dépendance vers AnimalLogic
     private final AnimalLogic animalLogic;
@@ -29,7 +29,7 @@ public class ObservationLogic {
             throw new IllegalArgumentException("Invalid date");
         }
 
-        observation.setId(counter++);
+        observation.setId(counter.getAndIncrement()); // Attribution d'un ID unique
         observations.put(observation.getId(), observation); // Stockage de la nouvelle observation dans la map
         return observation;
     }
