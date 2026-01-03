@@ -1,9 +1,11 @@
 package ch.heigvd;
 
 import ch.heigvd.controllers.AnimalController;
+import ch.heigvd.controllers.ObservationController;
 import ch.heigvd.exceptions.ConflictException;
 import ch.heigvd.exceptions.NotFoundException;
 import ch.heigvd.logic.AnimalLogic;
+import ch.heigvd.logic.ObservationLogic;
 import io.javalin.Javalin;
 
 public class Main {
@@ -11,8 +13,13 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // Logique métier
         AnimalLogic animalLogic = new AnimalLogic();
+        ObservationLogic observationLogic = new ObservationLogic(animalLogic); // ObservationLogic dépend de AnimalLogic
+
+        // Contrôleurs
         AnimalController animalController = new AnimalController(animalLogic);
+        ObservationController observationController = new ObservationController(observationLogic);
 
         Javalin app = Javalin.create();
 
@@ -23,7 +30,14 @@ public class Main {
         app.put("/animals/{number}", animalController::update);
         app.delete("/animals/{number}", animalController::delete);
 
-        // Exception handlers
+        // Routes Observations
+        app.post("/observations", observationController::create);
+        app.get("/observations", observationController::getAll);
+        app.get("/observations/{id}", observationController::getOne);
+        app.put("/observations/{id}", observationController::update);
+        app.delete("/observations/{id}", observationController::delete);
+
+        // Gestion des exceptions
         app.exception(NotFoundException.class, (e, ctx) -> {
             ctx.status(404).json(e.getMessage());
         });
@@ -39,3 +53,4 @@ public class Main {
         app.start(PORT);
     }
 }
+
