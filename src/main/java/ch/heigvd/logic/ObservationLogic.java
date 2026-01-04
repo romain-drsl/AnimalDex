@@ -66,15 +66,17 @@ public class ObservationLogic {
     }
 
     public Observation update(int id, Observation observation) {
-        if (!observations.containsKey(id)) {
-            throw new NotFoundException("Observation not found");
+        if (observation.getDate() == null) {
+            throw new IllegalArgumentException("Invalid date");
         }
 
         // Vérifier que l'animal existe
         animalLogic.getOne(observation.getAnimalNumber());
 
         observation.setId(id);
-        observations.put(id, observation); // Mise à jour de l'observation dans la map
+        if (observations.replace(id, observation) == null) {
+            throw new NotFoundException("Observation not found");
+        }
         return observation;
     }
 
