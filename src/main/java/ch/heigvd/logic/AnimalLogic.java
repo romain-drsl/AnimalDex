@@ -3,13 +3,17 @@ package ch.heigvd.logic;
 import ch.heigvd.exceptions.NotFoundException;
 import ch.heigvd.models.Animal;
 import ch.heigvd.models.AnimalGroup;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import java.util.*;
 
 public class AnimalLogic {
 
-    private final Map<Integer, Animal> animals = new HashMap<>();
-    private int counter = 1;
+    private final Map<Integer, Animal> animals = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger(1);
 
     public Animal create(Animal animal) {
 
@@ -18,7 +22,7 @@ public class AnimalLogic {
             throw new IllegalArgumentException("Invalid animal");
         }
 
-        animal.setNumber(counter++);
+        animal.setNumber(counter.getAndIncrement()); // Attribution d'un numéro unique
         animals.put(animal.getNumber(), animal); // Stockage du nouvel animal dans la map
         return animal;
     }
