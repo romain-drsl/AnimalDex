@@ -59,12 +59,14 @@ public class AnimalLogic {
     }
 
     public Animal update(int number, Animal animal) {
-        if (!animals.containsKey(number)) {
-            throw new NotFoundException("Animal not found");
+        if (animal.getFrenchName() == null || animal.getLatinName() == null || animal.getGroup() == null) {
+            throw new IllegalArgumentException("Invalid animal");
         }
 
         animal.setNumber(number);
-        animals.put(number, animal); // Mise à jour de l'animal dans la map
+        if (animals.replace(number, animal) == null) {
+            throw new NotFoundException("Animal not found");
+        }
         return animal;
     }
 
