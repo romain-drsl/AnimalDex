@@ -11,81 +11,81 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ObservationLogic {
 
-    private final Map<Integer, Observation> observations = new ConcurrentHashMap<>();
-    private final AtomicInteger counter = new AtomicInteger(1);
+  private final Map<Integer, Observation> observations = new ConcurrentHashMap<>();
+  private final AtomicInteger counter = new AtomicInteger(1);
 
-    // Dépendance vers AnimalLogic
-    private final AnimalLogic animalLogic;
+  // Dépendance vers AnimalLogic
+  private final AnimalLogic animalLogic;
 
-    public ObservationLogic(AnimalLogic animalLogic) {
-        this.animalLogic = animalLogic;
+  public ObservationLogic(AnimalLogic animalLogic) {
+    this.animalLogic = animalLogic;
+  }
+
+  public Observation create(Observation observation) {
+    // Vérifier que l'animal existe
+    animalLogic.getOne(observation.getAnimalNumber());
+
+    if (observation.getDate() == null) {
+      throw new IllegalArgumentException("Invalid date");
     }
 
-    public Observation create(Observation observation) {
-        // Vérifier que l'animal existe
-        animalLogic.getOne(observation.getAnimalNumber());
+    observation.setId(counter.getAndIncrement()); // Attribution d'un ID unique
+    observations.put(
+        observation.getId(), observation); // Stockage de la nouvelle observation dans la map
+    return observation;
+  }
 
-        if (observation.getDate() == null) {
-            throw new IllegalArgumentException("Invalid date");
-        }
+  public Observation getOne(int id) {
+    Observation obs = observations.get(id);
+    if (obs == null) {
+      throw new NotFoundException("Observation not found");
+    }
+    return obs;
+  }
 
-        observation.setId(counter.getAndIncrement()); // Attribution d'un ID unique
-        observations.put(observation.getId(), observation); // Stockage de la nouvelle observation dans la map
-        return observation;
+  public List<Observation> getAll(Integer animalNumber, LocalDate date, String region) {
+    List<Observation> result = new ArrayList<>(); // Liste pour stocker les observations filtrées
+
+    for (Observation obs : observations.values()) {
+
+      if (animalNumber != null && obs.getAnimalNumber() != animalNumber) {
+        continue;
+      }
+
+      if (date != null && !obs.getDate().equals(date)) {
+        continue;
+      }
+
+      if (region != null
+          && (obs.getRegion() == null
+              || !obs.getRegion().toLowerCase().contains(region.toLowerCase()))) {
+        continue;
+      }
+
+      result.add(obs);
     }
 
-    public Observation getOne(int id) {
-        Observation obs = observations.get(id);
-        if (obs == null) {
-            throw new NotFoundException("Observation not found");
-        }
-        return obs;
+    return result;
+  }
+
+  public Observation update(int id, Observation observation) {
+    if (observation.getDate() == null) {
+      throw new IllegalArgumentException("Invalid date");
     }
 
-    public List<Observation> getAll(Integer animalNumber, LocalDate date, String region) {
-        List<Observation> result = new ArrayList<>(); // Liste pour stocker les observations filtrées
+    // Vérifier que l'animal existe
+    animalLogic.getOne(observation.getAnimalNumber());
 
-        for (Observation obs : observations.values()) {
-
-            if (animalNumber != null && obs.getAnimalNumber() != animalNumber) {
-                continue;
-            }
-
-            if (date != null && !obs.getDate().equals(date)) {
-                continue;
-            }
-
-            if (region != null && (obs.getRegion() == null || !obs.getRegion().toLowerCase().contains(region.toLowerCase()))) {
-                continue;
-            }
-
-            result.add(obs);
-        }
-
-        return result;
+    observation.setId(id);
+    if (observations.replace(id, observation) == null) {
+      throw new NotFoundException("Observation not found");
     }
+    return observation;
+  }
 
-    public Observation update(int id, Observation observation) {
-        if (observation.getDate() == null) {
-            throw new IllegalArgumentException("Invalid date");
-        }
-
-        // Vérifier que l'animal existe
-        animalLogic.getOne(observation.getAnimalNumber());
-
-        observation.setId(id);
-        if (observations.replace(id, observation) == null) {
-            throw new NotFoundException("Observation not found");
-        }
-        return observation;
+  public void delete(int id) {
+    if (observations.remove(id) == null) {
+      throw new NotFoundException("Observation not found");
     }
-
-    public void delete(int id) {
-        if (observations.remove(id) == null) {
-            throw new NotFoundException("Observation not found");
-        }
-    }
+  }
 }
-
-
-
