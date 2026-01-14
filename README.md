@@ -527,8 +527,71 @@ Une fois la compilation terminée, le fichier JAR exécutable se trouve ici : `t
 
 ## Instructions de Run
 
-```Bash
+```bash
 java -jar target/AnimalDex-1.0-SNAPSHOT.jar
 ```
 
 ---
+
+## Instructions de Déploiement
+
+Le projet peut être déployé facilement grâce à Docker et Docker Compose.
+
+### Prérequis
+- Docker Engine
+- Docker Compose
+
+### Lancement de l'application
+
+L'infrastructure est divisée en deux parties : le reverse-proxy (Traefik) et l'application.
+
+1. **Démarrer Traefik :**
+   ```bash
+   cd traefik
+   docker compose up -d
+   cd ..
+   ```
+
+2. **Démarrer l'application AnimalDex :**
+   ```bash
+   docker compose up -d
+   ```
+
+L'application sera accessible via `http://localhost/` (ou le domaine configuré).
+Le dashboard Traefik est accessible via `http://localhost:8081`.
+
+---
+
+## Infrastructure et Configuration
+
+### Virtual Machine
+Pour installer la machine virtuelle :
+1. Installer une distribution Linux (ex: Ubuntu Server 22.04).
+2. Installer Docker :
+   ```bash
+   curl -fsSL https://get.docker.com -o get-docker.sh
+   sh get-docker.sh
+   sudo usermod -aG docker $USER
+   ```
+3. Configurer l'accès SSH avec clé pour les enseignants.
+
+### Configuration DNS
+Une zone DNS doit être configurée pour pointer vers l'IP de la machine virtuelle.
+Exemple d'enregistrements (fictifs) :
+
+```
+animaldex.com.      IN A    <IP_VM>
+www.animaldex.com.  IN CNAME animaldex.com.
+traefik.animaldex.com. IN CNAME animaldex.com.
+```
+
+---
+
+## Stratégie de Cache
+
+Pour améliorer les performances, l'API implémente un mécanisme de cache HTTP basé sur les **ETags**.
+
+1. Lors d'une requête `GET` sur une ressource (`/animals`, `/observations/{id}`, etc.), le serveur calcule un hash (ETag) du contenu de la réponse.
+2. Ce hash est envoyé dans le header `ETag` de la réponse.
+3. Lors des requêtes suivantes, le client envoie ce hash dans le header `If-None-Match`.
+4. Si le contenu n'a pas changé (le hash calculé est identique), le serveur renvoie un statut **304 Not Modified** sans corps de réponse, économisant ainsi de la bande passante.
