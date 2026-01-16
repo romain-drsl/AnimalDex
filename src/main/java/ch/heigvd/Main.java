@@ -26,18 +26,18 @@ public class Main {
     Javalin app = Javalin.create();
 
     // Routes Animals
-    app.post("/animals", animalController::create);
-    app.get("/animals", animalController::getAll);
-    app.get("/animals/{number}", animalController::getOne);
-    app.put("/animals/{number}", animalController::update);
-    app.delete("/animals/{number}", animalController::delete);
+    app.post("/api/animals", animalController::create);
+    app.get("/api/animals", animalController::getAll);
+    app.get("/api/animals/{number}", animalController::getOne);
+    app.put("/api/animals/{number}", animalController::update);
+    app.delete("/api/animals/{number}", animalController::delete);
 
     // Routes Observations
-    app.post("/observations", observationController::create);
-    app.get("/observations", observationController::getAll);
-    app.get("/observations/{id}", observationController::getOne);
-    app.put("/observations/{id}", observationController::update);
-    app.delete("/observations/{id}", observationController::delete);
+    app.post("/api/observations", observationController::create);
+    app.get("/api/observations", observationController::getAll);
+    app.get("/api/observations/{id}", observationController::getOne);
+    app.put("/api/observations/{id}", observationController::update);
+    app.delete("/api/observations/{id}", observationController::delete);
 
     // Gestion des exceptions
     app.exception(
