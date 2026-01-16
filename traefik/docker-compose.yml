@@ -12,8 +12,7 @@ services:
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       # Let's Encrypt Configuration
-      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       # REPLACE WITH YOUR EMAIL
       - "--certificatesresolvers.myresolver.acme.email=admin@animaldex.org"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
