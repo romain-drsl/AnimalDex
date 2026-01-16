@@ -56,7 +56,7 @@ Représentation des animaux. Propose les opérations suivantes :
 
 ### Créer un nouvel animal
 
-`POST /animals`
+`POST /api/animals`
 
 Créer un nouvel animal dans l’AnimalDex.
 
@@ -75,7 +75,7 @@ Exemple :
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"frenchName":"Renard roux","latinName":"Vulpes vulpes","group":"MAMMAL"}' \
-  https://<domain>/animals
+  https://<domain>/api/animals
 ```
 
 #### Réponse
@@ -106,7 +106,7 @@ Exemple de sortie (201 Created) :
 
 ### Obtenir plusieurs animaux
 
-`GET /animals`
+`GET /api/animals`
 
 Obtenir la liste des animaux enregistrés dans l’AnimalDex.
 
@@ -122,19 +122,19 @@ Exemples :
 
 ```bash
 # Liste complète des animaux
-curl https://<domain>/animals
+curl https://<domain>/api/animals
 
 # Recherche par nom français
-curl "https://<domain>/animals?frenchName=renard"
+curl "https://<domain>/api/animals?frenchName=renard"
 
 # Recherche par nom latin
-curl "https://<domain>/animals?latinName=vulpes"
+curl "https://<domain>/api/animals?latinName=vulpes"
 
 # Seulement les oiseaux
-curl "https://<domain>/animals?group=BIRD"
+curl "https://<domain>/api/animals?group=BIRD"
 
 # Combiner plusieurs filtres
-curl "https://<domain>/animals?group=MAMMAL&frenchName=renard"
+curl "https://<domain>/api/animals?group=MAMMAL&frenchName=renard"
 ```
 
 #### Réponse
@@ -172,7 +172,7 @@ Exemple de sortie (200 OK) :
 
 ### Obtenir un animal spécifique
 
-`GET /animals/{number}`
+`GET /api/animals/{number}`
 
 Obtenir un animal à partir de son numéro.
 
@@ -183,7 +183,7 @@ Le chemin de la requête doit contenir le numéro de l’animal.
 Exemple :
 
 ```bash
-curl https://<domain>/animals/5
+curl https://<domain>/api/animals/5
 ```
 
 #### Réponse
@@ -202,7 +202,7 @@ Le corps de la réponse contient un tableau JSON avec les propriétés suivantes
 
 ### Mettre à jour un animal
 
-`PUT /animals/{number}`
+`PUT /api/animals/{number}`
 
 Mettre à jour les informations d’un animal existant.
 
@@ -222,7 +222,7 @@ Exemple :
 curl -X PUT \
   -H "Content-Type: application/json" \
   -d '{"frenchName":"Renard (roux)","latinName":"Vulpes vulpes","group":"MAMMAL"}' \
-  https://<domain>/animals/1
+  https://<domain>/api/animals/1
 ```
 
 #### Réponse
@@ -242,7 +242,7 @@ Le corps de la réponse contient un tableau JSON avec les propriétés suivantes
 
 ### Supprimer un animal
 
-`DELETE /animals/{number}`
+`DELETE /api/animals/{number}`
 
 Supprimer un animal existant de l’AnimalDex à partir de son numéro.
 
@@ -253,7 +253,7 @@ Le chemin de la requête doit contenir le numéro de l’animal.
 Exemple :
 
 ```bash
-curl -X DELETE https://<domain>/animals/1
+curl -X DELETE https://<domain>/api/animals/1
 ```
 
 #### Réponse
@@ -277,7 +277,7 @@ Représentation des observations pour un animal donné. Propose les opérations 
 
 ### Créer une observation
 
-`POST /observations`
+`POST /api/observations`
 
 Créer une nouvelle observation associée à un animal existant.
 
@@ -296,7 +296,7 @@ Exemple :
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"animalNumber":1,"date":"15-08-2025","region":"Suisse","notes":"Vu en lisière de forêt"}' \
-  https://<domain>/observations
+  https://<domain>/api/observations
 ```
 
 #### Réponse
@@ -329,7 +329,7 @@ Exemple de sortie (201 Created) :
 
 ### Obtenir plusieurs observations
 
-`GET /observations`
+`GET /api/observations`
 
 Obtenir la liste des observations enregistrées dans l’AnimalDex.
 
@@ -344,19 +344,19 @@ Exemples :
 
 ```bash
 # Liste complète des observations
-curl https://<domain>/observations
+curl https://<domain>/api/observations
 
 # Filtrer par numéro d'animal
-curl "https://<domain>/observations?animalNumber=1"
+curl "https://<domain>/api/observations?animalNumber=1"
 
 # Filtrer par date
-curl "https://<domain>/observations?date=15-08-2025"
+curl "https://<domain>/api/observations?date=15-08-2025"
 
 # Filtrer par région
-curl "https://<domain>/observations?region=Suisse"
+curl "https://<domain>/api/observations?region=Suisse"
 
 # Combiner plusieurs filtres
-curl "https://<domain>/observations?animalNumber=1&region=Suisse"
+curl "https://<domain>/api/observations?animalNumber=1&region=Suisse"
 ```
 
 #### Réponse
@@ -396,7 +396,7 @@ Exemple de sortie (200 OK) :
 
 ### Obtenir une observation spécifique
 
-`GET /observations/{id}`
+`GET /api/observations/{id}`
 
 Obtenir une observation spécifique à partir de son identifiant.
 
@@ -407,7 +407,7 @@ Le chemin de la requête doit contenir l’identifiant de l’observation.
 Exemple :
 
 ```bash
-curl https://<domain>/observations/3
+curl https://<domain>/api/observations/3
 ```
 
 #### Réponse
@@ -427,7 +427,7 @@ Le corps de la réponse contient un objet JSON avec les propriétés suivantes :
 
 ### Mettre à jour une observation
 
-`PUT /observations/{id}`
+`PUT /api/observations/{id}`
 
 Mettre à jour les informations d’une observation existante.
 
@@ -448,7 +448,7 @@ Exemple :
 curl -X PUT \
   -H "Content-Type: application/json" \
   -d '{"animalNumber":1,"date":"16-08-2025","region":"Suisse","notes":"Vu près d\'un ruisseau"}' \
-  https://<domain>/observations/1
+  https://<domain>/api/observations/1
 ```
 
 #### Réponse
@@ -469,7 +469,7 @@ Le corps de la réponse contient un objet JSON avec les propriétés suivantes :
 
 ### Supprimer une observation
 
-`DELETE /observations/{id}`
+`DELETE /api/observations/{id}`
 
 Supprimer une observation existante à partir de son identifiant.
 
@@ -480,7 +480,7 @@ Le chemin de la requête doit contenir l’identifiant de l’observation.
 Exemple :
 
 ```bash
-curl -X DELETE https://<domain>/observations/1
+curl -X DELETE https://<domain>/api/observations/1
 ```
 
 #### Réponse
