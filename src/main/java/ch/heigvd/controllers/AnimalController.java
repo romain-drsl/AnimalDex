@@ -16,8 +16,7 @@ public class AnimalController {
 
   public void create(Context ctx) {
     // Désérialisation du corps de la requête en un objet Animal
-    Animal animal =
-        ctx.bodyAsClass(Animal.class);
+    Animal animal = ctx.bodyAsClass(Animal.class);
     Animal created = logic.create(animal);
     ctx.status(201).json(created);
   }

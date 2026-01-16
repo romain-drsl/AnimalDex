@@ -17,8 +17,7 @@ public class Main {
     AnimalLogic animalLogic = new AnimalLogic();
 
     // ObservationLogic dépend de AnimalLogic
-    ObservationLogic observationLogic =
-        new ObservationLogic(animalLogic);
+    ObservationLogic observationLogic = new ObservationLogic(animalLogic);
 
     // Contrôleurs
     AnimalController animalController = new AnimalController(animalLogic);
