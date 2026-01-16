@@ -1,12 +1,13 @@
 services:
   animaldex:
-    build: .
-    # image: ghcr.io/romain-drsl/animaldex:latest
+    # build: .
+    image: ghcr.io/romain-drsl/animaldex:latest
     container_name: animaldex
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.animaldex.rule=Host(`animaldex.localhost`) || Host(`localhost`)"
-      - "traefik.http.routers.animaldex.entrypoints=web"
+      - "traefik.http.routers.animaldex.rule=Host(`solal14-dai.duckdns.org`) || Host(`localhost`)"
+      - "traefik.http.routers.animaldex.entrypoints=web,websecure"
+      - "traefik.http.routers.animaldex.tls.certresolver=myresolver"
       - "traefik.http.services.animaldex.loadbalancer.server.port=8080"
     networks:
       - traefik-network
