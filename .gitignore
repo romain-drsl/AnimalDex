@@ -40,3 +40,9 @@ Thumbs.db
 
 # Folder config file
 [Dd]esktop.ini
+
+## Traefik
+letsencrypt/
+acme.json
+traefik/letsencrypt/
+traefik/acme.json
