@@ -3,17 +3,26 @@ services:
     image: traefik:v2.10
     container_name: traefik
     command:
-      - "--api.insecure=true"
+      #- "--api.insecure=true" # Disable insecure API in production if desired, or keep for debugging
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      # Auto-redirect HTTP to HTTPS
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      # Let's Encrypt Configuration
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      # REPLACE WITH YOUR EMAIL
+      - "--certificatesresolvers.myresolver.acme.email=admin@animaldex.org"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
       - "443:443"
-      - "8081:8080" # Dashboard
+      # - "8081:8080" # Dashboard
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
     networks:
       - traefik-network
 
