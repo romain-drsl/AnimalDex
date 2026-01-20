@@ -21,6 +21,7 @@ HEIG-VD, Class C, 2025–2026
 - [Instructions de Run](#instructions-de-run)
 - [Instructions de Déploiement](#instructions-de-déploiement)
 - [Infrastructure et Configuration](#infrastructure-et-configuration)
+- [Utilisation d’outils IA](#utilisation-doutils-ia)
 
 ---
 
@@ -39,7 +40,7 @@ Des fonctionnalités de recherche et de filtrage sont également proposées pour
 
 ## Contrat API
 
-L’API AnimalDex utilise le protocole HTTP sur le port 8080.
+L’application écoute en interne sur le port 8080, mais l’API est exposée publiquement via Traefik en HTTPS.
 
 Le format JSON est utilisé pour l’échange de données.
 
@@ -78,7 +79,7 @@ Exemple :
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"frenchName":"Renard roux","latinName":"Vulpes vulpes","group":"MAMMAL"}' \
-  https://<domain>/api/animals
+  https://solal14-dai.duckdns.org/api/animals
 ```
 
 #### Réponse
@@ -125,19 +126,19 @@ Exemples :
 
 ```bash
 # Liste complète des animaux
-curl https://<domain>/api/animals
+curl https://solal14-dai.duckdns.org/api/animals
 
 # Recherche par nom français
-curl "https://<domain>/api/animals?frenchName=renard"
+curl "https://solal14-dai.duckdns.org/api/animals?frenchName=renard"
 
 # Recherche par nom latin
-curl "https://<domain>/api/animals?latinName=vulpes"
+curl "https://solal14-dai.duckdns.org/api/animals?latinName=vulpes"
 
 # Seulement les oiseaux
-curl "https://<domain>/api/animals?group=BIRD"
+curl "https://solal14-dai.duckdns.org/api/animals?group=BIRD"
 
 # Combiner plusieurs filtres
-curl "https://<domain>/api/animals?group=MAMMAL&frenchName=renard"
+curl "https://solal14-dai.duckdns.org/api/animals?group=MAMMAL&frenchName=renard"
 ```
 
 #### Réponse
@@ -186,7 +187,7 @@ Le chemin de la requête doit contenir le numéro de l’animal.
 Exemple :
 
 ```bash
-curl https://<domain>/api/animals/5
+curl https://solal14-dai.duckdns.org/api/animals/5
 ```
 
 #### Réponse
@@ -225,7 +226,7 @@ Exemple :
 curl -X PUT \
   -H "Content-Type: application/json" \
   -d '{"frenchName":"Renard (roux)","latinName":"Vulpes vulpes","group":"MAMMAL"}' \
-  https://<domain>/api/animals/1
+  https://solal14-dai.duckdns.org/api/animals/1
 ```
 
 #### Réponse
@@ -256,7 +257,7 @@ Le chemin de la requête doit contenir le numéro de l’animal.
 Exemple :
 
 ```bash
-curl -X DELETE https://<domain>/api/animals/1
+curl -X DELETE https://solal14-dai.duckdns.org/api/animals/1
 ```
 
 #### Réponse
@@ -298,8 +299,8 @@ Exemple :
 ```bash
 curl -X POST \
   -H "Content-Type: application/json" \
-  -d '{"animalNumber":1,"date":"15-08-2025","region":"Suisse","notes":"Vu en lisière de forêt"}' \
-  https://<domain>/api/observations
+  -d '{"animalNumber":1,"date":"2025-08-15","region":"Suisse","notes":"Vu en lisière de forêt"}' \
+  https://solal14-dai.duckdns.org/api/observations
 ```
 
 #### Réponse
@@ -324,7 +325,7 @@ Exemple de sortie (201 Created) :
 {
   "id": 1,
   "animalNumber": 1,
-  "date": "15-08-2025",
+  "date": "2025-08-15",
   "region": "Suisse",
   "notes": "Vu en lisière de forêt"
 }
@@ -347,19 +348,19 @@ Exemples :
 
 ```bash
 # Liste complète des observations
-curl https://<domain>/api/observations
+curl https://solal14-dai.duckdns.org/api/observations
 
 # Filtrer par numéro d'animal
-curl "https://<domain>/api/observations?animalNumber=1"
+curl "https://solal14-dai.duckdns.org/api/observations?animalNumber=1"
 
 # Filtrer par date
-curl "https://<domain>/api/observations?date=15-08-2025"
+curl "https://solal14-dai.duckdns.org/api/observations?date=2025-08-15"
 
 # Filtrer par région
-curl "https://<domain>/api/observations?region=Suisse"
+curl "https://solal14-dai.duckdns.org/api/observations?region=Suisse"
 
 # Combiner plusieurs filtres
-curl "https://<domain>/api/observations?animalNumber=1&region=Suisse"
+curl "https://solal14-dai.duckdns.org/api/observations?animalNumber=1&region=Suisse"
 ```
 
 #### Réponse
@@ -382,14 +383,14 @@ Exemple de sortie (200 OK) :
   {
     "id": 1,
     "animalNumber": 2,
-    "date": "15-08-2025",
+    "date": "2025-08-15",
     "region": "Suisse",
     "notes": "Vu en lisière de forêt"
   },
   {
     "id": 2,
     "animalNumber": 2,
-    "date": "20-09-2025",
+    "date": "2025-09-20",
     "region": "Canada",
     "notes": ""
   }
@@ -410,7 +411,7 @@ Le chemin de la requête doit contenir l’identifiant de l’observation.
 Exemple :
 
 ```bash
-curl https://<domain>/api/observations/3
+curl https://solal14-dai.duckdns.org/api/observations/3
 ```
 
 #### Réponse
@@ -450,8 +451,8 @@ Exemple :
 ```bash
 curl -X PUT \
   -H "Content-Type: application/json" \
-  -d '{"animalNumber":1,"date":"16-08-2025","region":"Suisse","notes":"Vu près d\'un ruisseau"}' \
-  https://<domain>/api/observations/1
+  -d '{"animalNumber":1,"date":"2025-08-16","region":"Suisse","notes":"Vu près d\'un ruisseau"}' \
+  https://solal14-dai.duckdns.org/api/observations/1
 ```
 
 #### Réponse
@@ -483,7 +484,7 @@ Le chemin de la requête doit contenir l’identifiant de l’observation.
 Exemple :
 
 ```bash
-curl -X DELETE https://<domain>/api/observations/1
+curl -X DELETE https://solal14-dai.duckdns.org/api/observations/1
 ```
 
 #### Réponse
@@ -571,31 +572,83 @@ L'infrastructure est divisée en deux parties : le reverse-proxy (Traefik) et l'
    docker compose up -d
    ```
 
-L'application sera accessible via `http://solal14-dai.duckdns.org`.
+L'application sera accessible via `https://solal14-dai.duckdns.org/api/animals`.
 
 ---
 
-## Infrastructure et Configuration
+## Infrastructure et Configuration 
 
-### Machine Virtuelle
-Pour installer la machine virtuelle :
-1. Installer une distribution Linux (ex: Ubuntu Server 22.04).
-2. Installer Docker :
-   ```bash
-   curl -fsSL https://get.docker.com -o get-docker.sh
-   sh get-docker.sh
-   sudo usermod -aG docker $USER
-   ```
-3. Configurer l'accès SSH avec clé pour les enseignants.
+### Machine virtuelle (VM)
+L’application est déployée sur une VM Azure (Ubuntu 24.04.3 LTS). Les ports **22 (SSH)**, **80 (HTTP)** et **443 (HTTPS)** sont ouverts. Traefik est utilisé comme reverse-proxy et l’application est exécutée via Docker Compose.
 
-### Configuration DNS
-Une zone DNS doit être configurée pour pointer vers l'IP de la machine virtuelle.
-Exemple d'enregistrements (fictifs) :
+### DNS (preuve)
+Le service est accessible via le domaine **solal14-dai.duckdns.org**. Preuve que le DNS pointe vers l’IP publique de la VM :
 
+```txt
+$ dig +short solal14-dai.duckdns.org
+4.233.88.218
+
+$ curl -4 ifconfig.me
+4.233.88.218
 ```
-animaldex.com.      IN A    <IP_VM>
-www.animaldex.com.  IN CNAME animaldex.com.
-traefik.animaldex.com. IN CNAME animaldex.com.
+
+### Déploiement avec Docker Compose
+
+L’infrastructure est séparée en deux parties : **Traefik** (reverse-proxy) et **AnimalDex** (application).
+
+Démarrer Traefik :
+
+```bash
+cd ~/AnimalDex/traefik
+docker compose up -d
 ```
+
+Démarrer AnimalDex :
+
+```bash
+cd ~/AnimalDex
+docker compose up -d
+```
+
+Preuve que Traefik et l’application tournent sur la VM :
+
+```txt
+$ docker ps
+animaldex  (ghcr.io/romain-drsl/animaldex:latest)
+traefik    (traefik:v2.10)  ports: 80->80, 443->443
+```
+
+### Accès via le domaine + HTTPS (Let’s Encrypt)
+
+L’API est accessible publiquement via HTTPS (exemple) :
+
+```txt
+$ curl -i https://solal14-dai.duckdns.org/api/animals
+HTTP/2 200
+...
+```
+
+Traefik génère automatiquement un certificat TLS via Let’s Encrypt (preuve) :
+
+```txt
+subject: CN=solal14-dai.duckdns.org
+issuer:  C=US; O=Let's Encrypt; CN=R13
+SSL certificate verify ok.
+expire date: Apr 16 10:58:58 2026 GMT
+```
+
+> Remarque : la racine `/` peut retourner `404` car l’API est servie sous le préfixe `/api`.
+
+## Utilisation d’outils IA
+
+ChatGPT a été utilisé comme outil de support pour :
+
+- L’aide à la mise en place de l’infrastructure **Docker / Docker Compose** (séparation Traefik + application, réseau partagé, bonnes pratiques de déploiement).
+- L’optimisation et la validation du **Dockerfile** (multi-stage build, choix des images, réduction de la taille, bonnes pratiques Maven/JDK).
+- L’aide à la configuration et au débogage de **Traefik** (routage par nom de domaine, HTTPS, intégration Let’s Encrypt).
+- La rédaction, la reformulation et la correction de la **documentation technique** (README, commandes de déploiement, exemples `curl`, preuves DNS/HTTPS).
+- Des conseils sur la robustesse/concurrence côté API (structures de données thread-safe, cohérence des codes HTTP, gestion d’erreurs).
+
+L’intégralité du code final, de la configuration et de la documentation a été **revue, intégrée et validée manuellement** par les auteurs.
 
 ---
