@@ -16,8 +16,11 @@ HEIG-VD, Class C, 2025–2026
 - [Contrat API](#contrat-api)
 - [Ressource 1 - Animaux](#ressource-1---animaux)
 - [Ressource 2 - Observations](#ressource-2---observations)
+- [Stratégie de Cache](#stratégie-de-cache)
 - [Instructions de Build](#instructions-de-build)
 - [Instructions de Run](#instructions-de-run)
+- [Instructions de Déploiement](#instructions-de-déploiement)
+- [Infrastructure et Configuration](#infrastructure-et-configuration)
 
 ---
 
@@ -42,7 +45,7 @@ Le format JSON est utilisé pour l’échange de données.
 
 L’API permettra d’effectuer des opérations CRUD sur les deux ressources.
 
-Le service sera déployé sur une machine virtuelle et accessible via un nom de domaine.
+Le service sera déployé sur une machine virtuelle et accessible via le nom de domaine `solal14-dai.duckdns.org`.
 
 ## Ressource 1 - Animaux
 
@@ -494,6 +497,17 @@ Le corps de la réponse est vide.
 
 ---
 
+## Stratégie de Cache
+
+Pour améliorer les performances, l'API implémente un mécanisme de cache HTTP basé sur les **ETags**.
+
+1. Lors d'une requête `GET` sur une ressource (`/animals`, `/observations/{id}`, etc.), le serveur calcule un hash (ETag) du contenu de la réponse.
+2. Ce hash est envoyé dans le header `ETag` de la réponse.
+3. Lors des requêtes suivantes, le client envoie ce hash dans le header `If-None-Match`.
+4. Si le contenu n'a pas changé (le hash calculé est identique), le serveur renvoie un statut **304 Not Modified** sans corps de réponse, économisant ainsi de la bande passante.
+
+---
+
 ## Instructions de Build
 
 Le projet inclut un **Maven Wrapper**, ce qui signifie que vous n'avez pas besoin d'installer Maven manuellement.
@@ -557,14 +571,13 @@ L'infrastructure est divisée en deux parties : le reverse-proxy (Traefik) et l'
    docker compose up -d
    ```
 
-L'application sera accessible via `http://localhost/` (ou le domaine configuré).
-Le dashboard Traefik est accessible via `http://localhost:8081`.
+L'application sera accessible via `http://solal14-dai.duckdns.org`.
 
 ---
 
 ## Infrastructure et Configuration
 
-### Virtual Machine
+### Machine Virtuelle
 Pour installer la machine virtuelle :
 1. Installer une distribution Linux (ex: Ubuntu Server 22.04).
 2. Installer Docker :
@@ -586,12 +599,3 @@ traefik.animaldex.com. IN CNAME animaldex.com.
 ```
 
 ---
-
-## Stratégie de Cache
-
-Pour améliorer les performances, l'API implémente un mécanisme de cache HTTP basé sur les **ETags**.
-
-1. Lors d'une requête `GET` sur une ressource (`/animals`, `/observations/{id}`, etc.), le serveur calcule un hash (ETag) du contenu de la réponse.
-2. Ce hash est envoyé dans le header `ETag` de la réponse.
-3. Lors des requêtes suivantes, le client envoie ce hash dans le header `If-None-Match`.
-4. Si le contenu n'a pas changé (le hash calculé est identique), le serveur renvoie un statut **304 Not Modified** sans corps de réponse, économisant ainsi de la bande passante.
